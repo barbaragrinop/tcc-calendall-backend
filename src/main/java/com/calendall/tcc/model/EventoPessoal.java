@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import com.calendall.tcc.model.enums.TipoPrioridade;
 
 @Entity
 @Table(name = "tb_evento_pessoal")

@@ -1,4 +1,4 @@
-package com.calendall.tcc.model;
+package com.calendall.tcc.model.enums;
 
 public enum TipoPrioridade {
     ALTA,

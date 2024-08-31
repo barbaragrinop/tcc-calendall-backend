@@ -19,9 +19,9 @@ public abstract class Evento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", nullable = false)
-    @NotNull(message = "Nome do evento é obrigatório.")
-    private String nome;
+    @Column(name = "titulo", nullable = false)
+    @NotNull(message = "Título do evento é obrigatório.")
+    private String titulo;
 
     @Column(name = "descricao")
     private String descricao;
