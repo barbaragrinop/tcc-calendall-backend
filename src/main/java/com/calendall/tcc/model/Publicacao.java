@@ -1,4 +1,4 @@
-package com.calendall.tcc.model;
+/*package com.calendall.tcc.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -39,3 +39,4 @@ public class Publicacao implements Serializable {
 
     public Publicacao(){ }
 }
+*/

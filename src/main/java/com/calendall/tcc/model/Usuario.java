@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_usuario")
+@Table(name = "tbl_usuario")
 
 @Setter
 @Getter
@@ -18,17 +18,17 @@ import lombok.Setter;
 public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_usuario;
 
-    @Column(name = "nome", nullable = false)
+    @Column(name = "nm_usuario", nullable = false)
     @NotNull(message = "Nome do usuário é obrigatório.")
     private String nome;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "ds_email", nullable = false)
     @NotNull(message = "Email do usuário é obrigatório.")
     private String email;
 
-    @Column(name = "senha", nullable = false)
+    @Column(name = "ds_senha", nullable = false)
     @NotNull(message = "Senha do usuáio é obrigatória.")
     private String senha;
 

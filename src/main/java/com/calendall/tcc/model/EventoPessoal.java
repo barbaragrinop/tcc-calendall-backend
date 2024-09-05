@@ -12,19 +12,19 @@ import lombok.Setter;
 import com.calendall.tcc.model.enums.TipoPrioridade;
 
 @Entity
-@Table(name = "tb_evento_pessoal")
+@Table(name = "tbl_evento_pessoal")
 
 @Setter
 @Getter
 
-@PrimaryKeyJoinColumn(name = "evento_id")
+@PrimaryKeyJoinColumn(name = "id_evento")
 public class EventoPessoal extends Evento {
 
-    @Column(name = "tipoPrioridade", nullable = false)
+    @Column(name = "nm_prioridade", nullable = false)
     @NotNull(message = "Prioridade do Evento Pessoal é obrigatória.")
     private TipoPrioridade tipoPrioridade;
 
-    @Column(name = "tipoNotificacao")
+    @Column(name = "nm_notificacao")
     private String tipoNotificacao;
 
     @ManyToOne

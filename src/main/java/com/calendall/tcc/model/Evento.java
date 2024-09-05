@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_evento")
+@Table(name = "tbl_evento")
 
 @Setter
 @Getter
@@ -17,13 +17,13 @@ import lombok.Setter;
 public abstract class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_evento;
 
-    @Column(name = "titulo", nullable = false)
+    @Column(name = "nm_titulo", nullable = false)
     @NotNull(message = "Título do evento é obrigatório.")
     private String titulo;
 
-    @Column(name = "descricao")
+    @Column(name = "ds_evento")
     private String descricao;
 
     @Column(name = "dt_evento", nullable = false)

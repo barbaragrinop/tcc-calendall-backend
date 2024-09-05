@@ -10,12 +10,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_evento_sala")
+@Table(name = "tbl_evento_sala")
 
 @Setter
 @Getter
 
-@PrimaryKeyJoinColumn(name = "evento_id")
+@PrimaryKeyJoinColumn(name = "id_evento")
 public class EventoSala extends Evento {
 
     @ManyToOne

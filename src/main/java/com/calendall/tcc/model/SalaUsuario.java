@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_SalaUsuario")
+@Table(name = "tbl_SalaUsuario")
 
 @Setter
 @Getter
@@ -26,14 +26,14 @@ public class SalaUsuario {
     private Long id_SalaUsuario;
 
     @ManyToOne
-    @JoinColumn(name = "id_Sala", nullable = false)
+    @JoinColumn(name = "id_sala", nullable = false)
     private Sala sala;
 
     @ManyToOne
-    @JoinColumn(name = "id_Usuario", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
-    @Column(name = "funcaoUsuario", nullable = false)
+    @Column(name = "nm_funcao_usuario", nullable = false)
     private Funcao funcaoUsuario;
 }
 
