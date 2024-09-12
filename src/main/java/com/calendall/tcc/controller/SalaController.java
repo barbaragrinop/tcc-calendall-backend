@@ -5,9 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.calendall.tcc.model.Sala;
@@ -16,7 +14,6 @@ import com.calendall.tcc.model.mapper.SalaMapper;
 import com.calendall.tcc.service.SalaService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -34,7 +31,7 @@ public class SalaController implements IController<Sala> {
     @Override
     @PostMapping("/")
     @Operation(summary = "Cria uma nova sala", description = "Cria uma nova sala")
-    public ResponseEntity<Sala> post(@RequestBody SalaDTO sala) {
+    public ResponseEntity<Sala> post(@RequestBody @Valid SalaDTO sala) {
         Sala salaEntity = _mapper.toEntity(sala);
 
         Sala newSala = _salaService.create(salaEntity);
