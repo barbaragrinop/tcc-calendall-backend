@@ -29,12 +29,14 @@ public class SalaController implements IController<Sala> {
     private SalaMapper _mapper;
 
     @Override
-    @PostMapping("/")
+    @PostMapping("/criarSala")
     @Operation(summary = "Cria uma nova sala", description = "Cria uma nova sala")
     public ResponseEntity<Sala> post(@RequestBody @Valid SalaDTO sala) {
         Sala salaEntity = _mapper.toEntity(sala);
 
         Sala newSala = _salaService.create(salaEntity);
+
+        // adicionar SalaUsuario
 
          URI location = ServletUriComponentsBuilder
                         .fromCurrentRequest()
@@ -45,33 +47,52 @@ public class SalaController implements IController<Sala> {
     }
 
     @Override
+    @GetMapping("/listarSalas")
+    @Operation(summary = "Lista todas as salas", description = "Lista todas as salas")
     public ResponseEntity<List<Sala>> getAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAll'");
+        List<Sala> salas = _salaService.findAll();
+        if(salas.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(salas);
     }
 
     @Override
-    public ResponseEntity<Sala> get(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
+    @GetMapping("/{id}")
+    @Operation(summary = "Retorna uma sala", description = "Retorna uma sala com o id informado")
+    public ResponseEntity<Sala> get(@PathVariable Long id) {
+        Sala sala = _salaService.findById(id);
+        if(sala == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(sala);
     }
 
     @Override
-    public ResponseEntity<Sala> put(Sala obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'put'");
+    @DeleteMapping("/apagarSala/{id}")
+    @Operation(summary = "Deleta uma sala", description = "Deleta uma sala com o id informado")
+    public ResponseEntity<Sala> delete(@PathVariable("id") Long id) {
+        if(_salaService.delete(id)){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Override
+    @PutMapping("/editarSala/{id}")
+    @Operation(summary = "Edita uma sala", description = "Edita todos os dados de uma sala com o id informado")
+    public ResponseEntity<Sala> put(@Valid @RequestBody Sala sala) {
+       
+        if(_salaService.update(sala)){
+            return ResponseEntity.ok(sala);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @Override
     public ResponseEntity<Sala> patch(Sala obj) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'patch'");
-    }
-
-    @Override
-    public ResponseEntity<Sala> delete(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
     
 }

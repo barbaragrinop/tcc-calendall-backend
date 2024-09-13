@@ -1,6 +1,7 @@
 package com.calendall.tcc.model.mapper;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class SalaMapper {
         sala.setId_sala(null);
         sala.setNome(dto.getNome());
         sala.setDescricao(dto.getDescricao());
-        sala.setDt_criacao(LocalDateTime.now());
+        sala.setDt_criacao(LocalDateTime.now(ZoneId.of("UTC-3")));
 
         return sala;
     }
