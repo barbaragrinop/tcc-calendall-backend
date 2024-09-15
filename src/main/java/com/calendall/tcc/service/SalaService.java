@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.calendall.tcc.model.EventoSala;
 import com.calendall.tcc.model.Sala;
+import com.calendall.tcc.repository.EventoSalaRepository;
 import com.calendall.tcc.repository.SalaRepository;
 
 @Service
@@ -14,6 +16,8 @@ public class SalaService implements IService<Sala> {
 
     @Autowired
     private SalaRepository salaRepository;
+    @Autowired
+    private EventoSalaRepository eventoSalaRepository;
 
     public SalaService(){
     }
@@ -22,6 +26,16 @@ public class SalaService implements IService<Sala> {
     public Sala create(Sala sala) {
         salaRepository.save(sala);
         return sala;
+    }
+
+    public EventoSala createEventoSala(Long id_sala, EventoSala eventoSala) {
+        Sala sala = salaRepository.findById(id_sala).orElse(null);
+        if (sala != null){
+            eventoSala.setSala(sala);
+            eventoSalaRepository.save(eventoSala);
+            return eventoSala;
+        }
+        return null;
     }
 
     @Override
@@ -33,6 +47,14 @@ public class SalaService implements IService<Sala> {
     @Override
     public List<Sala> findAll() {
         return salaRepository.findAll();
+    }
+
+    public List<EventoSala> findAllEventos(Long id_sala) {
+        Sala sala = salaRepository.findById(id_sala).orElse(null);
+        if (sala != null){
+            return eventoSalaRepository.findBySala(sala);
+        }
+        return null;
     }
 
     @Override
