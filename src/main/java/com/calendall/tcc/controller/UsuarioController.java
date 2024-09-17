@@ -1,37 +1,29 @@
 package com.calendall.tcc.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-public class UsuarioController implements IController {
+import com.calendall.tcc.model.Usuario;
+import com.calendall.tcc.service.UsuarioService;
 
-    @Override
-    public ResponseEntity getAll() {
-        throw new UnsupportedOperationException("Unimplemented method 'getAll'");
-    }
+import lombok.RequiredArgsConstructor;
 
-    @Override
-    public ResponseEntity<String> get(Long id) {
-        return ResponseEntity.ok("Sucesso!");
-    }
+@RestController
+@RequestMapping("/usuario")
+@RequiredArgsConstructor
+public class UsuarioController {
 
-    @Override
-    public ResponseEntity post() {
-        throw new UnsupportedOperationException("Unimplemented method 'post'");
-    }
+    private final UsuarioService _usuarioService;
 
-    @Override
-    public ResponseEntity put(Object obj) {
-        throw new UnsupportedOperationException("Unimplemented method 'put'");
-    }
+    @GetMapping("/usuariosListagem")
 
-    @Override
-    public ResponseEntity patch(Object obj) {
-        throw new UnsupportedOperationException("Unimplemented method 'patch'");
-    }
+    public ResponseEntity<List<Usuario>> getAll(){
 
-    @Override
-    public ResponseEntity delete(Long id) {
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
-    }
-    
+        List<Usuario> usuarios = _usuarioService.obterTodosUsuarios();
+		return ResponseEntity.ok(usuarios);
+	}
 }

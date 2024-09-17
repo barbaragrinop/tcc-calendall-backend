@@ -31,7 +31,7 @@ public class TokenService {
             return token;
 
         } catch (JWTCreationException exception) {
-            throw new RuntimeException("Erro durante a autenticação");
+            throw new RuntimeException("Erro durante a geração do Token para autenticação");
         }
     }
 
@@ -51,6 +51,6 @@ public class TokenService {
     }
 
     private Instant GerenciarTempoExpirarToken() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-3"));
+        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 }

@@ -1,9 +1,6 @@
 package com.calendall.tcc.controller;
 
-import java.util.Optional;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,53 +8,48 @@ import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 import com.calendall.tcc.infra.security.TokenService;
 import com.calendall.tcc.model.Usuario;
-import com.calendall.tcc.model.dtos.AutenticacaoResponseDto;
-import com.calendall.tcc.model.dtos.CadastroRequestDto;
+import com.calendall.tcc.model.dtos.CadastroDto;
 import com.calendall.tcc.model.dtos.LoginDto;
-import com.calendall.tcc.repository.UsuarioRepository;
+import com.calendall.tcc.model.dtos.TokenJwtDto;
+import com.calendall.tcc.service.UsuarioService;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AutenticacaoController {
 
-    private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final TokenService tokenService;
+    private final UsuarioService _usuarioService;
+    private final TokenService _tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
 
-        Usuario usuario = this.usuarioRepository.findByEmail(loginDto.email())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        try {
+            var usuario = _usuarioService.AutenticarUsuario(loginDto);
 
-        if (passwordEncoder.matches(loginDto.senha(), usuario.getSenha())) {
-            String token = this.tokenService.GerarToken(usuario);
+            String token = _tokenService.GerarToken(usuario);
 
-            return ResponseEntity.ok(new AutenticacaoResponseDto(usuario.getNome(), token));
+            return ResponseEntity.ok(new TokenJwtDto(token));
+
+        } catch (Exception ex) {
+
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
 
-        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/cadastro")
-    public ResponseEntity cadastrar(@RequestBody CadastroRequestDto cadastroDto) {
+    public ResponseEntity<?> cadastrar(@RequestBody CadastroDto cadastroDto) {
 
-        Optional<Usuario> usuario = this.usuarioRepository.findByEmail(cadastroDto.email());
-        
-        if(usuario.isEmpty()){
-            Usuario novoUsuario = new Usuario();
-            novoUsuario.setSenha(passwordEncoder.encode(cadastroDto.senha()));
-            novoUsuario.setEmail(cadastroDto.email());
-            novoUsuario.setNome(cadastroDto.nome());
-            novoUsuario.setDt_nascimento(cadastroDto.dataNascimento());
+        try {
+            Usuario novoUsuario = _usuarioService.CadastrarUsuario(cadastroDto);
+            String token = _tokenService.GerarToken(novoUsuario);
 
-            this.usuarioRepository.save(novoUsuario);
+            return ResponseEntity.ok(new TokenJwtDto(token));
 
-        String token = this.tokenService.GerarToken(novoUsuario);
-        return ResponseEntity.ok(new AutenticacaoResponseDto(novoUsuario.getNome(), token));
+        } catch (Exception ex) {
+            
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
-
-        return ResponseEntity.badRequest().build();
     }
 }

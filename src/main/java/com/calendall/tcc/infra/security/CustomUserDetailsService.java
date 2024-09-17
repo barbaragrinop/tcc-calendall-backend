@@ -15,11 +15,13 @@ import com.calendall.tcc.repository.UsuarioRepository;
 public class CustomUserDetailsService implements UserDetailsService{
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioRepository _usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = this.usuarioRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+
+        Usuario usuario = _usuarioRepository.findByEmail(username);
+
         return new org.springframework.security.core.userdetails.User(usuario.getEmail(), usuario.getSenha(), new ArrayList<>());
     }
 }

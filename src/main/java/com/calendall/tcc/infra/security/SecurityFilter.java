@@ -25,11 +25,18 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
         var token = this.recoverToken(request);
         var login = tokenService.ValidarToken(token);
 
         if(login != null){
-            Usuario usuario = userRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
+
+            Usuario usuario = userRepository.findByEmail(login);
+
+            if (usuario == null) {
+                throw new RuntimeException("Usuário não encontrado");
+            }
+
             var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
             var authentication = new UsernamePasswordAuthenticationToken(usuario, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
