@@ -12,9 +12,11 @@ import com.calendall.tcc.model.dtos.CadastroDto;
 import com.calendall.tcc.model.dtos.LoginDto;
 import com.calendall.tcc.model.dtos.TokenJwtDto;
 import com.calendall.tcc.service.UsuarioService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/autenticacao")
+@Tag(name = "Autenticação", description = "Endpoints relacionados à autenticação do usuário no sistema")
 @RequiredArgsConstructor
 public class AutenticacaoController {
 
@@ -35,7 +37,6 @@ public class AutenticacaoController {
 
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
-
     }
 
     @PostMapping("/cadastro")
