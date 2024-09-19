@@ -5,7 +5,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+//import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,8 +20,8 @@ public class EventoSala extends Evento {
 
     @ManyToOne
     @JoinColumn(name = "id_sala", nullable = false)
-    @NotNull(message = "ID da Sala responsável pelo evento é obrigatório.")
-    private Sala id_sala;
+    //@NotNull(message = "ID da Sala responsável pelo evento é obrigatório.")
+    private Sala sala;
 
 }
 
