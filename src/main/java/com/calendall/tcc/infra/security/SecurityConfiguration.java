@@ -29,6 +29,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/autenticacao/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/autenticacao/cadastro").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/criarSala").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v2/api-docs/**", "/swagger-resources/**", "/webjars/**", "/swagger-resources/","/v3/api-docs", "/v2/api-docs","/swagger-resources/","/configuration/ui", "/configuration/security","/swagger-ui.html").permitAll() 
                         .anyRequest().authenticated())
 

@@ -11,11 +11,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.calendall.tcc.model.EventoSala;
 import com.calendall.tcc.model.Sala;
+import com.calendall.tcc.model.SalaUsuario;
 import com.calendall.tcc.model.dto.EventoSalaDTO;
 import com.calendall.tcc.model.dto.SalaDTO;
 import com.calendall.tcc.model.mapper.EventoSalaMapper;
 import com.calendall.tcc.model.mapper.SalaMapper;
 import com.calendall.tcc.service.SalaService;
+import com.calendall.tcc.service.SalaUsuarioService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,6 +31,8 @@ public class SalaController implements IController<Sala> {
 
     @Autowired
     private SalaService _salaService;
+    @Autowired
+    private SalaUsuarioService _salaUsuarioService;
 
     @Autowired
     private SalaMapper _salaMapper;
@@ -113,6 +117,14 @@ public class SalaController implements IController<Sala> {
         return ResponseEntity.ok(eventos); //200
     }
 
+    @GetMapping("/listarSalaUsuario")
+    public ResponseEntity<List<SalaUsuario>> getSalaUsuarios() {
+        List<SalaUsuario> salaUsuarios = _salaUsuarioService.findAll();
+        if(salaUsuarios.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(salaUsuarios);
+    }
 
     @Override
     @DeleteMapping("/apagarSala/{id}")
