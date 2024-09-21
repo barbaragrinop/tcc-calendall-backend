@@ -1,4 +1,4 @@
-package com.calendall.tcc.model.dtos;
+package com.calendall.tcc.model.dto;
 
 public record TokenJwtDto(String token) {
     

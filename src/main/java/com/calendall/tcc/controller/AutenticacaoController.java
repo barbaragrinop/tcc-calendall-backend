@@ -8,15 +8,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 import com.calendall.tcc.infra.security.TokenService;
 import com.calendall.tcc.model.Usuario;
-import com.calendall.tcc.model.dtos.CadastroDto;
-import com.calendall.tcc.model.dtos.LoginDto;
-import com.calendall.tcc.model.dtos.TokenJwtDto;
+import com.calendall.tcc.model.dto.TokenJwtDto;
+import com.calendall.tcc.model.dto.CadastroDto;
+import com.calendall.tcc.model.dto.LoginDto;
 import com.calendall.tcc.service.UsuarioService;
+
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/autenticacao")
-@Tag(name = "Autenticação", description = "Endpoints relacionados à autenticação do usuário no sistema")
+@Tag(name = "Autenticação", description = "Autenticação do usuário no sistema")
 @RequiredArgsConstructor
 public class AutenticacaoController {
 
@@ -24,6 +26,8 @@ public class AutenticacaoController {
     private final TokenService _tokenService;
 
     @PostMapping("/login")
+    @Operation(summary = "Realiza login do usuário", description = "Realiza login do usuário")
+
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
 
         try {
@@ -40,6 +44,7 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/cadastro")
+    @Operation(summary = "Cadastra um novo usuário", description = "Cadastra um novo usuário no sistema")
     public ResponseEntity<?> cadastrar(@RequestBody CadastroDto cadastroDto) {
 
         try {

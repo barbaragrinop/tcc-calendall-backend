@@ -4,8 +4,8 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.calendall.tcc.model.Usuario;
-import com.calendall.tcc.model.dtos.CadastroDto;
-import com.calendall.tcc.model.dtos.LoginDto;
+import com.calendall.tcc.model.dto.CadastroDto;
+import com.calendall.tcc.model.dto.LoginDto;
 import com.calendall.tcc.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 
