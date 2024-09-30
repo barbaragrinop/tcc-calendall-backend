@@ -25,7 +25,7 @@ public class SalaUsuarioService {
         SalaUsuario salaUsuario = new SalaUsuario();
         salaUsuario.setUsuario(usuario);
         salaUsuario.setSala(sala);
-        salaUsuario.setFuncaoUsuario(Funcao.ALUNO);
+        salaUsuario.setFuncaoUsuario(Funcao.REPRESENTANTE);
         salaUsuarioRepository.save(salaUsuario);
 
         return salaUsuario;

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,6 @@ import com.calendall.tcc.model.Sala;
 import com.calendall.tcc.model.Usuario;
 import com.calendall.tcc.repository.EventoSalaRepository;
 import com.calendall.tcc.repository.SalaRepository;
-import com.calendall.tcc.repository.UsuarioRepository;
 
 @Service
 public class SalaService implements IService<Sala> {
@@ -21,8 +21,6 @@ public class SalaService implements IService<Sala> {
     private SalaRepository salaRepository;
     @Autowired
     private EventoSalaRepository eventoSalaRepository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private SalaUsuarioService salaUsuarioService;
@@ -31,17 +29,15 @@ public class SalaService implements IService<Sala> {
     }
 
     private Usuario obterUsuarioLogado() {
-        String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
-        Usuario usuarioLogado = usuarioRepository.findByEmail(emailUsuario);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuarioLogado = (Usuario) authentication.getPrincipal(); 
         return usuarioLogado;
     }
 
 
     @Override
     public Sala create(Sala sala) {
-        //Usuario usuarioCriador = obterUsuarioLogado();
-
-        Usuario usuarioCriador = usuarioRepository.findById(1L).orElse(null);
+        Usuario usuarioCriador = obterUsuarioLogado();
 
         salaRepository.save(sala);
         salaUsuarioService.atribuirFuncao(usuarioCriador, sala);

@@ -3,7 +3,6 @@ package com.calendall.tcc.controller;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 
+
 @RestController
 @RequestMapping("/salas")
 @Tag(name = "Sala", description = "Gerenciamento de salas")
@@ -37,7 +37,7 @@ public class SalaController implements IController<Sala> {
     @Autowired
     private SalaMapper _salaMapper;
     @Autowired
-    private EventoSalaMapper _EventoSalaMapper;
+    private EventoSalaMapper _EventoSalaMapper;   
 
     @Override
     @PostMapping("/criarSala")
@@ -46,9 +46,6 @@ public class SalaController implements IController<Sala> {
         Sala salaEntity = _salaMapper.toEntity(sala);
 
         Sala newSala = _salaService.create(salaEntity);
-
-        // adicionar SalaUsuario
-
          URI location = ServletUriComponentsBuilder
                         .fromCurrentRequest()
                         .path("/{id}")
