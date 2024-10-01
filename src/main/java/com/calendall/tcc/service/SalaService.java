@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.calendall.tcc.model.EventoSala;
 import com.calendall.tcc.model.Sala;
+import com.calendall.tcc.model.Usuario;
 import com.calendall.tcc.repository.EventoSalaRepository;
 import com.calendall.tcc.repository.SalaRepository;
 
@@ -19,12 +22,26 @@ public class SalaService implements IService<Sala> {
     @Autowired
     private EventoSalaRepository eventoSalaRepository;
 
+    @Autowired
+    private SalaUsuarioService salaUsuarioService;
+
     public SalaService(){
     }
 
+    private Usuario obterUsuarioLogado() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuarioLogado = (Usuario) authentication.getPrincipal(); 
+        return usuarioLogado;
+    }
+
+
     @Override
     public Sala create(Sala sala) {
+        Usuario usuarioCriador = obterUsuarioLogado();
+
         salaRepository.save(sala);
+        salaUsuarioService.atribuirFuncao(usuarioCriador, sala);
+
         return sala;
     }
 

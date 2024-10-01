@@ -3,7 +3,6 @@ package com.calendall.tcc.controller;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +10,18 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.calendall.tcc.model.EventoSala;
 import com.calendall.tcc.model.Sala;
+import com.calendall.tcc.model.SalaUsuario;
 import com.calendall.tcc.model.dto.EventoSalaDTO;
 import com.calendall.tcc.model.dto.SalaDTO;
 import com.calendall.tcc.model.mapper.EventoSalaMapper;
 import com.calendall.tcc.model.mapper.SalaMapper;
 import com.calendall.tcc.service.SalaService;
+import com.calendall.tcc.service.SalaUsuarioService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+
 
 
 @RestController
@@ -29,11 +31,13 @@ public class SalaController implements IController<Sala> {
 
     @Autowired
     private SalaService _salaService;
+    @Autowired
+    private SalaUsuarioService _salaUsuarioService;
 
     @Autowired
     private SalaMapper _salaMapper;
     @Autowired
-    private EventoSalaMapper _EventoSalaMapper;
+    private EventoSalaMapper _EventoSalaMapper;   
 
     @Override
     @PostMapping("/criarSala")
@@ -42,9 +46,6 @@ public class SalaController implements IController<Sala> {
         Sala salaEntity = _salaMapper.toEntity(sala);
 
         Sala newSala = _salaService.create(salaEntity);
-
-        // adicionar SalaUsuario
-
          URI location = ServletUriComponentsBuilder
                         .fromCurrentRequest()
                         .path("/{id}")
@@ -113,6 +114,14 @@ public class SalaController implements IController<Sala> {
         return ResponseEntity.ok(eventos); //200
     }
 
+    @GetMapping("/listarSalaUsuario")
+    public ResponseEntity<List<SalaUsuario>> getSalaUsuarios() {
+        List<SalaUsuario> salaUsuarios = _salaUsuarioService.findAll();
+        if(salaUsuarios.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(salaUsuarios);
+    }
 
     @Override
     @DeleteMapping("/apagarSala/{id}")
