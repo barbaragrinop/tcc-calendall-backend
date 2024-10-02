@@ -9,5 +9,6 @@ import com.calendall.tcc.model.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
     Usuario findByEmail(String Email);
+    @SuppressWarnings("null")
     List<Usuario> findAll();
 }

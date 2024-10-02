@@ -24,6 +24,7 @@ import jakarta.validation.Valid;
 
 
 
+
 @RestController
 @RequestMapping("/salas")
 @Tag(name = "Sala", description = "Gerenciamento de salas")
@@ -80,6 +81,23 @@ public class SalaController implements IController<Sala> {
                         .toUri();
         return ResponseEntity.created(location).body(newEventoSala); //201
     }
+
+    @PostMapping("/{id_sala}/adicionarUsuario/{id_usuario}")
+    public ResponseEntity<SalaUsuario> addUser(@PathVariable Long id_sala, @PathVariable Long id_usuario) {
+        SalaUsuario newSalaUsuario = _salaService.adicionaUsario(id_sala, id_usuario);
+        
+        if(newSalaUsuario == null){
+            return ResponseEntity.badRequest().build(); //400
+        }
+
+        URI location = ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .path("/{id}")
+                        .buildAndExpand(newSalaUsuario.getId_SalaUsuario())
+                        .toUri();
+        return ResponseEntity.created(location).body(newSalaUsuario); //201
+    }
+    
     
 
     @Override
@@ -128,6 +146,15 @@ public class SalaController implements IController<Sala> {
     @Operation(summary = "Deleta uma sala", description = "Deleta uma sala com o id informado")
     public ResponseEntity<Sala> delete(@PathVariable("id") Long id) {
         if(_salaService.delete(id)){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+    
+    @DeleteMapping("/apagarEventoSala/{id_evento}")
+    @Operation(summary = "Deleta um evento de uma sala", description = "Deleta um evento com o id informado")
+    public ResponseEntity<EventoSala> deleteEventoSala(@PathVariable("id_evento") Long id_evento) {
+        if(_salaService.deleteEventoSala(id_evento)){
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();

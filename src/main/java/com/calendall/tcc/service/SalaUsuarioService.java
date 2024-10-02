@@ -20,12 +20,12 @@ public class SalaUsuarioService {
     public SalaUsuarioService() {
     }
 
-    public SalaUsuario atribuirFuncao(Usuario usuario, Sala sala){
+    public SalaUsuario atribuirFuncao(Usuario usuario, Sala sala, Funcao funcao){
 
         SalaUsuario salaUsuario = new SalaUsuario();
         salaUsuario.setUsuario(usuario);
         salaUsuario.setSala(sala);
-        salaUsuario.setFuncaoUsuario(Funcao.REPRESENTANTE);
+        salaUsuario.setFuncaoUsuario(funcao);
         salaUsuarioRepository.save(salaUsuario);
 
         return salaUsuario;
