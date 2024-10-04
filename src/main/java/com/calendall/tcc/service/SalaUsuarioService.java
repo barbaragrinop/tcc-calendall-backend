@@ -34,4 +34,12 @@ public class SalaUsuarioService {
     public List<SalaUsuario> findAll() {
         return salaUsuarioRepository.findAll();
     }
+
+    public List<SalaUsuario> findBySala(Long id_sala) {
+        return salaUsuarioRepository.findBySala(id_sala);
+    }
+
+    public List<SalaUsuario> findByUsuario(Long id_usuario) {
+        return salaUsuarioRepository.findByUsuario(id_usuario);
+    }
 }
