@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Evento {
+public class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_evento;
