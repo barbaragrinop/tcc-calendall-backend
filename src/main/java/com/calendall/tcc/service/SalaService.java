@@ -28,7 +28,7 @@ public class SalaService implements IService<Sala> {
     public SalaService(){
     }
 
-    private Usuario obterUsuarioLogado() {
+    public Usuario obterUsuarioLogado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuarioLogado = (Usuario) authentication.getPrincipal(); 
         return usuarioLogado;
