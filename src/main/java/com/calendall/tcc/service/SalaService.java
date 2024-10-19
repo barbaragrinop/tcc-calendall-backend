@@ -42,7 +42,7 @@ public class SalaService implements IService<Sala> {
         return usuarioLogado;
     }
 
-    private Boolean verificarRepresentante(Long id_sala){
+    public Boolean verificarRepresentante(Long id_sala){
         Usuario usuarioLogado = obterUsuarioLogado();
         Long id_usuario = usuarioLogado.getId_usuario();
 
@@ -130,17 +130,48 @@ public class SalaService implements IService<Sala> {
     @Override
     public boolean delete(Long id) {
        if (salaRepository.existsById(id)){
-            salaRepository.deleteById(id);
-            return true;
+            if(verificarRepresentante(id)){
+                deleteAllUsuariosFromSala(id);
+                salaRepository.deleteById(id);
+                return true;
+            }
         }
         return false;
     }
 
     public boolean deleteEventoSala(Long id_eventoSala) {
         if (eventoSalaRepository.existsById(id_eventoSala)){
-            eventoSalaRepository.deleteById(id_eventoSala);
+            EventoSala eventoSala = eventoSalaRepository.findById(id_eventoSala).get();
+            Sala sala = eventoSala.getSala();
+            if(verificarRepresentante(sala.getId_sala())){
+                eventoSalaRepository.deleteById(id_eventoSala);
+                return true;
+            } 
+        }
+        return false;
+    }
+
+    public boolean deleteUsuarioFromSala(Long id_usuario, Long id_sala){
+       
+        if(verificarRepresentante(id_sala)){
+            if(salaUsuarioRepository.findByUsuarioAndSala(id_usuario, id_sala) != null){
+                SalaUsuario salaUsuario = salaUsuarioRepository.findByUsuarioAndSala(id_usuario, id_sala);
+                salaUsuarioRepository.delete(salaUsuario);
+                return true;
+            }
+        }        
+        return false;
+    }
+
+    public boolean deleteAllUsuariosFromSala(Long id_sala) {
+
+        List<SalaUsuario> salaUsuarios = salaUsuarioRepository.findBySala(id_sala);
+        
+        if (salaUsuarios != null && !salaUsuarios.isEmpty()) {
+            salaUsuarioRepository.deleteAll(salaUsuarios);
             return true;
         }
+
         return false;
     }
 }

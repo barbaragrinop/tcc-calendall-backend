@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioController {
 
     private final UsuarioService _usuarioService;
-    private SalaUsuarioService _salaUsuarioService;
+    private final SalaUsuarioService _salaUsuarioService;
 
     @GetMapping("/{id_usuario}/salasListagem")
     @Operation(summary = "Lista salas de usuário", description = "Lista todas as salas de um usuário com id informado")

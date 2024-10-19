@@ -44,16 +44,6 @@ public class SalaUsuarioController {
         return ResponseEntity.created(location).body(newSalaUsuario); //201
     }
 
-    @GetMapping("/listarSalaUsuario")
-    @Operation(summary = "Lista relações sala-usuário", description = "Lista todos os usuários de todas as salas")
-    public ResponseEntity<List<SalaUsuario>> getSalaUsuarios() {
-        List<SalaUsuario> salaUsuarios = _salaUsuarioService.findAll();
-        if(salaUsuarios.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(salaUsuarios);
-    }
-
     @GetMapping("/{id_sala}/listarUsuariosSala/")
     @Operation(summary = "Lista usuários de sala", description = "Lista todos os usuários de uma sala com id informado")
     public ResponseEntity<List<SalaUsuario>> getBySala (@PathVariable Long id_sala) {
@@ -62,6 +52,15 @@ public class SalaUsuarioController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(usersSala);
+    }
+
+    @DeleteMapping("/{id_sala}/deletarUsuario/{id_usuario}")
+    @Operation(summary = "Deleta um usuário de uma sala", description = "Deleta usuário da sala, com respectivos ids informados")
+    public ResponseEntity<SalaUsuario> deleteUsuarioFromSala(@PathVariable Long id_usuario, @PathVariable Long id_sala) {
+        if(_salaService.deleteUsuarioFromSala(id_usuario, id_sala)){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }
