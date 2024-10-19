@@ -10,15 +10,23 @@ import org.springframework.stereotype.Service;
 
 import com.calendall.tcc.model.EventoSala;
 import com.calendall.tcc.model.Sala;
+import com.calendall.tcc.model.SalaUsuario;
 import com.calendall.tcc.model.Usuario;
+import com.calendall.tcc.model.enums.Funcao;
 import com.calendall.tcc.repository.EventoSalaRepository;
 import com.calendall.tcc.repository.SalaRepository;
+import com.calendall.tcc.repository.SalaUsuarioRepository;
+import com.calendall.tcc.repository.UsuarioRepository;
 
 @Service
 public class SalaService implements IService<Sala> {
 
     @Autowired
     private SalaRepository salaRepository;
+    @Autowired
+    private SalaUsuarioRepository salaUsuarioRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
     @Autowired
     private EventoSalaRepository eventoSalaRepository;
 
@@ -34,24 +42,60 @@ public class SalaService implements IService<Sala> {
         return usuarioLogado;
     }
 
+    public Boolean verificarRepresentante(Long id_sala){
+        Usuario usuarioLogado = obterUsuarioLogado();
+        Long id_usuario = usuarioLogado.getId_usuario();
+
+        SalaUsuario salaUsuario = salaUsuarioRepository.findByUsuarioAndSala(id_usuario, id_sala);
+
+        return salaUsuario.getFuncaoUsuario() == Funcao.REPRESENTANTE || 
+                salaUsuario.getFuncaoUsuario() == Funcao.VICE_REPRESENTANTE;
+    }
+
+    private Boolean verificarPresencaSala(Long id_sala, Long id_usuario){
+        SalaUsuario salaUsuario = salaUsuarioRepository.findByUsuarioAndSala(id_usuario, id_sala);
+        if(salaUsuario != null){
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public Sala create(Sala sala) {
         Usuario usuarioCriador = obterUsuarioLogado();
 
         salaRepository.save(sala);
-        salaUsuarioService.atribuirFuncao(usuarioCriador, sala);
+        salaUsuarioService.atribuirFuncao(usuarioCriador, sala, Funcao.REPRESENTANTE);
 
         return sala;
     }
 
     public EventoSala createEventoSala(Long id_sala, EventoSala eventoSala) {
         Sala sala = salaRepository.findById(id_sala).orElse(null);
-        if (sala != null){
-            eventoSala.setSala(sala);
-            eventoSalaRepository.save(eventoSala);
-            return eventoSala;
+        
+        if(verificarRepresentante(id_sala) ){
+            if (sala != null){
+                eventoSala.setSala(sala);
+                eventoSalaRepository.save(eventoSala);
+                return eventoSala;
+            }
+        }        
+        return null;
+    }
+
+    public SalaUsuario adicionaUsario(Long id_sala, Long id_usuario){
+        Sala sala = salaRepository.findById(id_sala).orElse(null);
+        Usuario usuarioToAdd = usuarioRepository.findById(id_usuario).orElse(null);
+
+        if(sala != null & usuarioToAdd != null & 
+            !verificarPresencaSala(id_sala, id_usuario) & verificarRepresentante(id_sala))
+        {
+            SalaUsuario salaUsuario = salaUsuarioService.atribuirFuncao(usuarioToAdd, sala, Funcao.ALUNO);
+            salaUsuarioRepository.save(salaUsuario);
+            return salaUsuario;
         }
+
         return null;
     }
 
@@ -86,9 +130,48 @@ public class SalaService implements IService<Sala> {
     @Override
     public boolean delete(Long id) {
        if (salaRepository.existsById(id)){
-            salaRepository.deleteById(id);
+            if(verificarRepresentante(id)){
+                deleteAllUsuariosFromSala(id);
+                salaRepository.deleteById(id);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean deleteEventoSala(Long id_eventoSala) {
+        if (eventoSalaRepository.existsById(id_eventoSala)){
+            EventoSala eventoSala = eventoSalaRepository.findById(id_eventoSala).get();
+            Sala sala = eventoSala.getSala();
+            if(verificarRepresentante(sala.getId_sala())){
+                eventoSalaRepository.deleteById(id_eventoSala);
+                return true;
+            } 
+        }
+        return false;
+    }
+
+    public boolean deleteUsuarioFromSala(Long id_usuario, Long id_sala){
+       
+        if(verificarRepresentante(id_sala)){
+            if(salaUsuarioRepository.findByUsuarioAndSala(id_usuario, id_sala) != null){
+                SalaUsuario salaUsuario = salaUsuarioRepository.findByUsuarioAndSala(id_usuario, id_sala);
+                salaUsuarioRepository.delete(salaUsuario);
+                return true;
+            }
+        }        
+        return false;
+    }
+
+    public boolean deleteAllUsuariosFromSala(Long id_sala) {
+
+        List<SalaUsuario> salaUsuarios = salaUsuarioRepository.findBySala(id_sala);
+        
+        if (salaUsuarios != null && !salaUsuarios.isEmpty()) {
+            salaUsuarioRepository.deleteAll(salaUsuarios);
             return true;
         }
+
         return false;
     }
 }

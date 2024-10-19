@@ -34,14 +34,5 @@ public class Sala implements Serializable {
     @CreationTimestamp
     private LocalDateTime dt_criacao;
 
-    /*@ManyToOne
-    @JoinColumn(name = "id_representante1", nullable = false)
-    @NotNull(message = "ID do Usuário representante da sala é obrigratório.")
-    private Usuario id_representante1;
-
-    @ManyToOne
-    @JoinColumn(name = "id_representante2")
-    private Usuario id_representante2;*/
-
     public Sala(){ }
 }

@@ -20,12 +20,12 @@ public class SalaUsuarioService {
     public SalaUsuarioService() {
     }
 
-    public SalaUsuario atribuirFuncao(Usuario usuario, Sala sala){
+    public SalaUsuario atribuirFuncao(Usuario usuario, Sala sala, Funcao funcao){
 
         SalaUsuario salaUsuario = new SalaUsuario();
         salaUsuario.setUsuario(usuario);
         salaUsuario.setSala(sala);
-        salaUsuario.setFuncaoUsuario(Funcao.REPRESENTANTE);
+        salaUsuario.setFuncaoUsuario(funcao);
         salaUsuarioRepository.save(salaUsuario);
 
         return salaUsuario;
@@ -33,5 +33,17 @@ public class SalaUsuarioService {
 
     public List<SalaUsuario> findAll() {
         return salaUsuarioRepository.findAll();
+    }
+
+    public List<SalaUsuario> findBySala(Long id_sala) {
+        return salaUsuarioRepository.findBySala(id_sala);
+    }
+
+    public List<SalaUsuario> findByUsuario(Long id_usuario) {
+        return salaUsuarioRepository.findByUsuario(id_usuario);
+    }
+
+    public SalaUsuario findByUsuarioAndSala(Long id_usuario, Long id_sala) {
+        return salaUsuarioRepository.findByUsuarioAndSala(id_usuario, id_sala);
     }
 }
