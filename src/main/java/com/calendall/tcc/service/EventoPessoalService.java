@@ -88,6 +88,14 @@ public class EventoPessoalService {
         return eventoPessoalRepository.findByUsuario(usuario);
     }
 
+    public List<EventoPessoal> BuscarEventosPessoaisNaDataAtual(Long id_usuario){
+        return eventoPessoalRepository.findEventosPessoaisNaDataAtualPorUsuario(id_usuario);
+    }
+
+    public List<EventoPessoal> BuscarEventosPessoaisAposDataAtual(Long id_usuario){
+        return eventoPessoalRepository.findEventosPessoaisAposDataAtualPorUsuario(id_usuario);
+    }
+
     public void DeletarEventoPessoal(Long id_evento_pessoal) throws Exception {
         Optional<EventoPessoal> eventoPessoal = eventoPessoalRepository.findById(id_evento_pessoal);
     
@@ -95,5 +103,5 @@ public class EventoPessoalService {
             throw new Exception("Evento pessoal não encontrado.");
         }
         eventoPessoalRepository.deleteById(id_evento_pessoal);
-    }    
+    }
 }

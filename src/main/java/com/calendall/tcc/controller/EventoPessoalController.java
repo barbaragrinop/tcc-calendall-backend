@@ -101,4 +101,46 @@ public class EventoPessoalController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @GetMapping("/{id_usuario}/buscarEventosPessoaisNaDataAtualPorUsuario")
+    @Operation(summary = "Busca eventos pessoais por usuário na data atual", description = "Busca todos os eventos pessoais do usuário com base na data atual.")
+    public ResponseEntity<?> getEventosPessoaisDataAtualPorUsuario(@PathVariable Long id_usuario) {
+
+        try {
+
+            Optional<Usuario> usuarioProcurado = usuarioRepository.findById(id_usuario);
+
+            if (usuarioProcurado.isEmpty()) {
+                throw new Exception("Usuário não encontrado");
+            }
+
+            List<EventoPessoal> eventosPessoais = eventoPessoalService
+                    .BuscarEventosPessoaisNaDataAtual(id_usuario);
+            return ResponseEntity.ok(eventosPessoais);
+
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/{id_usuario}/buscarEventosPessoaisAposDataAtualPorUsuario")
+    @Operation(summary = "Busca eventos pessoais por usuário após data atual", description = "Busca todos os eventos pessoais do usuário nos próximos dias com base na data atual.")
+    public ResponseEntity<?> getEventosPessoaisAposDataAtualPorUsuario(@PathVariable Long id_usuario) {
+
+        try {
+
+            Optional<Usuario> usuarioProcurado = usuarioRepository.findById(id_usuario);
+
+            if (usuarioProcurado.isEmpty()) {
+                throw new Exception("Usuário não encontrado");
+            }
+
+            List<EventoPessoal> eventosPessoais = eventoPessoalService
+                    .BuscarEventosPessoaisAposDataAtual(id_usuario);
+            return ResponseEntity.ok(eventosPessoais);
+
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
 }
