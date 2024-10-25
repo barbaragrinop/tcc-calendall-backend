@@ -11,6 +11,7 @@ import com.calendall.tcc.model.Evento;
 import com.calendall.tcc.model.EventoPessoal;
 import com.calendall.tcc.model.Usuario;
 import com.calendall.tcc.model.dto.EventoPessoalDTO;
+import com.calendall.tcc.model.dto.EventoPessoalEdicaoDTO;
 import com.calendall.tcc.model.dto.EventoPessoalNovoDTO;
 import com.calendall.tcc.repository.EventoPessoalRepository;
 import com.calendall.tcc.repository.EventoRepository;
@@ -98,10 +99,22 @@ public class EventoPessoalService {
 
     public void DeletarEventoPessoal(Long id_evento_pessoal) throws Exception {
         Optional<EventoPessoal> eventoPessoal = eventoPessoalRepository.findById(id_evento_pessoal);
-    
+
         if (eventoPessoal.isEmpty()) {
             throw new Exception("Evento pessoal não encontrado.");
         }
         eventoPessoalRepository.deleteById(id_evento_pessoal);
+    }
+
+    public EventoPessoal AtualizarEventoPessoal(Long id_evento_pessoal, EventoPessoalEdicaoDTO eventoPessoalEdicaoDTO)
+            throws Exception {
+
+        EventoPessoal eventoPessoal = eventoPessoalRepository.findById(id_evento_pessoal)
+                .orElseThrow(() -> new Exception("Evento pessoal não encontrado."));
+
+        eventoPessoal.setTipoPrioridade(eventoPessoalEdicaoDTO.getTipoPrioridade());
+        eventoPessoal.setTipoNotificacao(eventoPessoalEdicaoDTO.getTipoNotificacao());
+
+        return eventoPessoalRepository.save(eventoPessoal);
     }
 }
