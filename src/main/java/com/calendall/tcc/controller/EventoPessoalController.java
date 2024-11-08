@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.calendall.tcc.model.EventoPessoal;
 import com.calendall.tcc.model.Usuario;
 import com.calendall.tcc.model.dto.EventoPessoalDTO;
+import com.calendall.tcc.model.dto.EventoPessoalEdicaoDTO;
 import com.calendall.tcc.model.dto.EventoPessoalNovoDTO;
 import com.calendall.tcc.repository.UsuarioRepository;
 import com.calendall.tcc.service.EventoPessoalService;
@@ -97,6 +99,62 @@ public class EventoPessoalController {
         try {
             eventoPessoalService.DeletarEventoPessoal(id_evento_pessoal);
             return ResponseEntity.ok("Evento pessoal deletado com sucesso.");
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/{id_usuario}/buscarEventosPessoaisNaDataAtualPorUsuario")
+    @Operation(summary = "Busca eventos pessoais por usuário na data atual", description = "Busca todos os eventos pessoais do usuário com base na data atual.")
+    public ResponseEntity<?> getEventosPessoaisDataAtualPorUsuario(@PathVariable Long id_usuario) {
+
+        try {
+
+            Optional<Usuario> usuarioProcurado = usuarioRepository.findById(id_usuario);
+
+            if (usuarioProcurado.isEmpty()) {
+                throw new Exception("Usuário não encontrado");
+            }
+
+            List<EventoPessoal> eventosPessoais = eventoPessoalService
+                    .BuscarEventosPessoaisNaDataAtual(id_usuario);
+            return ResponseEntity.ok(eventosPessoais);
+
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/{id_usuario}/buscarEventosPessoaisAposDataAtualPorUsuario")
+    @Operation(summary = "Busca eventos pessoais por usuário após data atual", description = "Busca todos os eventos pessoais do usuário nos próximos dias com base na data atual.")
+    public ResponseEntity<?> getEventosPessoaisAposDataAtualPorUsuario(@PathVariable Long id_usuario) {
+
+        try {
+
+            Optional<Usuario> usuarioProcurado = usuarioRepository.findById(id_usuario);
+
+            if (usuarioProcurado.isEmpty()) {
+                throw new Exception("Usuário não encontrado");
+            }
+
+            List<EventoPessoal> eventosPessoais = eventoPessoalService
+                    .BuscarEventosPessoaisAposDataAtual(id_usuario);
+            return ResponseEntity.ok(eventosPessoais);
+
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PatchMapping("/{id_evento_pessoal}/editarEventoPessoal")
+    @Operation(summary = "Edita um evento pessoal", description = "Edita os dados de um evento pessoal específico")
+    public ResponseEntity<?> editarEventoPessoalParcialmente(@PathVariable Long id_evento_pessoal,
+            @RequestBody @Valid EventoPessoalEdicaoDTO eventoPessoalEdicaoDTO) {
+
+        try {
+            EventoPessoal eventoPessoalAtualizado = eventoPessoalService.AtualizarEventoPessoal(id_evento_pessoal,
+            eventoPessoalEdicaoDTO);
+            return ResponseEntity.ok(eventoPessoalAtualizado);
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
