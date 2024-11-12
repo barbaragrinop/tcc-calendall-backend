@@ -24,7 +24,10 @@ public class TokenService {
 
             String token = JWT.create()
                     .withIssuer("tcc-calendall-backend")
+                    .withClaim("id", usuario.getId_usuario())
                     .withSubject(usuario.getEmail())
+                    .withClaim("nome", usuario.getNome())
+                    .withClaim("dataNascimento", usuario.getDt_nascimento().toString())
                     .withExpiresAt(this.GerenciarTempoExpirarToken())
                     .sign(algorithm);
 
