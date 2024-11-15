@@ -28,6 +28,7 @@ public class TokenService {
                     .withSubject(usuario.getEmail())
                     .withClaim("nome", usuario.getNome())
                     .withClaim("dataNascimento", usuario.getDt_nascimento().toString())
+                    .withClaim("email", usuario.getEmail())
                     .withExpiresAt(this.GerenciarTempoExpirarToken())
                     .sign(algorithm);
 
