@@ -15,7 +15,6 @@ import com.calendall.tcc.model.dto.EventoPessoalEdicaoDTO;
 import com.calendall.tcc.model.dto.EventoPessoalNovoDTO;
 import com.calendall.tcc.repository.EventoPessoalRepository;
 import com.calendall.tcc.repository.EventoRepository;
-import com.calendall.tcc.repository.UsuarioRepository;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
