@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
-@RequestMapping("/salas")
-@Tag(name = "Sala", description = "Gerenciamento de salas")
+@RequestMapping("/sala")
+@Tag(name = "Sala Usuário", description = "Gerenciamento de usuários nas salas")
 public class SalaUsuarioController {
 
     @Autowired
@@ -54,10 +54,19 @@ public class SalaUsuarioController {
         return ResponseEntity.ok(usersSala);
     }
 
+    @PatchMapping("/{id_sala}/adicionarVice/{id_usuario}")
+    public ResponseEntity<SalaUsuario> addVice (@PathVariable Long id_sala, @PathVariable Long id_usuario) {
+        SalaUsuario vice = _salaUsuarioService.addVice(id_sala, id_usuario);
+        if (vice != null){
+            return ResponseEntity.ok(vice);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @DeleteMapping("/{id_sala}/deletarUsuario/{id_usuario}")
     @Operation(summary = "Deleta um usuário de uma sala", description = "Deleta usuário da sala, com respectivos ids informados")
     public ResponseEntity<SalaUsuario> deleteUsuarioFromSala(@PathVariable Long id_usuario, @PathVariable Long id_sala) {
-        if(_salaService.deleteUsuarioFromSala(id_usuario, id_sala)){
+        if(_salaUsuarioService.deleteUsuarioFromSala(id_usuario, id_sala)){
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();

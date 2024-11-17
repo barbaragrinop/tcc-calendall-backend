@@ -1,6 +1,6 @@
 package com.calendall.tcc.model.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.calendall.tcc.model.enums.TipoPrioridade;
 
@@ -24,5 +24,5 @@ public class EventoPessoalNovoDTO {
     private String descricao;
 
     @NotNull(message = "Data do evento é obrigatória")
-    private LocalDate dt_evento;
+    private LocalDateTime dt_evento;
 }
