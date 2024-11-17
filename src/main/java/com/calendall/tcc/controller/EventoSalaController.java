@@ -1,7 +1,7 @@
 package com.calendall.tcc.controller;
 
 import java.net.URI;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +42,7 @@ public class EventoSalaController {
     public ResponseEntity<EventoSala> postEventoSala(@PathVariable Long id_sala, @RequestBody @Valid EventoSalaDTO eventoSala) {
 
         if(
-            eventoSala.getDt_evento().isBefore(LocalDate.now()) ||
+            eventoSala.getDt_evento().isBefore(LocalDateTime.now()) ||
             eventoSala.getTitulo() == null
             ){
             return ResponseEntity.badRequest().build(); //400

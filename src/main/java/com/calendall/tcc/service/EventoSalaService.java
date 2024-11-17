@@ -19,7 +19,7 @@ public class EventoSalaService {
     private EventoSalaRepository eventoSalaRepository;
 
     @Autowired
-    private SalaService salaService;
+    private SalaUsuarioService salaUsuarioService;
 
     public EventoSalaService(){
     }
@@ -28,7 +28,7 @@ public class EventoSalaService {
     public EventoSala createEventoSala(Long id_sala, EventoSala eventoSala) {
         Sala sala = salaRepository.findById(id_sala).orElse(null);
         
-        if(salaService.verificarRepresentante(id_sala) ){
+        if(salaUsuarioService.verificarRepresentante(id_sala) ){
             if (sala != null){
                 eventoSala.setSala(sala);
                 eventoSalaRepository.save(eventoSala);
@@ -59,7 +59,7 @@ public class EventoSalaService {
         if (eventoSalaRepository.existsById(id_eventoSala)){
             EventoSala eventoSala = eventoSalaRepository.findById(id_eventoSala).get();
             Sala sala = eventoSala.getSala();
-            if(salaService.verificarRepresentante(sala.getId_sala())){
+            if(salaUsuarioService.verificarRepresentante(sala.getId_sala())){
                 eventoSalaRepository.deleteById(id_eventoSala);
                 return true;
             } 
@@ -72,7 +72,7 @@ public class EventoSalaService {
         if(eventoSalaRepository.existsById(id_eventoSala)){
             EventoSala eventoSala = eventoSalaRepository.findById(id_eventoSala).get();
             Sala sala = eventoSala.getSala();
-            if(salaService.verificarRepresentante(sala.getId_sala())){
+            if(salaUsuarioService.verificarRepresentante(sala.getId_sala())){
                 eventoSala.setIc_completa(true);
                 return eventoSalaRepository.save(eventoSala);
             }

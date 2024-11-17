@@ -28,7 +28,7 @@ public class EventoPessoalService {
     private EventoPessoalRepository eventoPessoalRepository;
 
     @Autowired
-    private SalaService salaService;
+    private SalaUsuarioService salaUsuarioService;
 
     public EventoPessoal CriarEventoPessoal(@PathVariable Long id_evento,
             @RequestBody EventoPessoalDTO eventoPessoalDTO) throws Exception {
@@ -39,7 +39,7 @@ public class EventoPessoalService {
             throw new Exception("Evento não encontrado");
         }
 
-        Usuario usuarioLogado = salaService.obterUsuarioLogado();
+        Usuario usuarioLogado = salaUsuarioService.obterUsuarioLogado();
 
         if (usuarioLogado == null) {
             throw new Exception("Usuário não encontrado");
@@ -59,7 +59,7 @@ public class EventoPessoalService {
 
     public EventoPessoal CriarEventoPessoalIndividual(EventoPessoalNovoDTO eventoPessoalNovoDTO) throws Exception {
 
-        Usuario usuarioLogado = salaService.obterUsuarioLogado();
+        Usuario usuarioLogado = salaUsuarioService.obterUsuarioLogado();
 
         if (usuarioLogado == null) {
             throw new Exception("Usuário não encontrado");

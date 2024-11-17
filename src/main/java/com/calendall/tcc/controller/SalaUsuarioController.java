@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
-@RequestMapping("/salaUsuario")
+@RequestMapping("/sala")
 @Tag(name = "Sala Usuário", description = "Gerenciamento de usuários nas salas")
 public class SalaUsuarioController {
 
