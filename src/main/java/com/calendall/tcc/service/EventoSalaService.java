@@ -32,6 +32,8 @@ public class EventoSalaService {
             if (sala != null){
                 eventoSala.setSala(sala);
                 eventoSalaRepository.save(eventoSala);
+                sala.setQt_eventos(sala.getQt_eventos() + 1);
+                salaRepository.save(sala);
                 return eventoSala;
             }
         }        
