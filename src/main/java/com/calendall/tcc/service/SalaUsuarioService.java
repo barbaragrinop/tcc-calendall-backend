@@ -22,7 +22,7 @@ public class SalaUsuarioService {
     public SalaUsuarioService() {
     }
 
-       public Usuario obterUsuarioLogado() {
+    public Usuario obterUsuarioLogado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuarioLogado = (Usuario) authentication.getPrincipal(); 
         return usuarioLogado;
@@ -38,10 +38,27 @@ public class SalaUsuarioService {
                 salaUsuario.getFuncaoUsuario() == Funcao.VICE_REPRESENTANTE;
     }
 
+    public Boolean verificarRepresentante(Long id_sala, Long id_usuario){
+        SalaUsuario salaUsuario = salaUsuarioRepository.findByUsuarioAndSala(id_usuario, id_sala);
+
+        return salaUsuario.getFuncaoUsuario() == Funcao.REPRESENTANTE || 
+                salaUsuario.getFuncaoUsuario() == Funcao.VICE_REPRESENTANTE;
+    }
+
     public Boolean verificarPresencaSala(Long id_sala, Long id_usuario){
         SalaUsuario salaUsuario = salaUsuarioRepository.findByUsuarioAndSala(id_usuario, id_sala);
         if(salaUsuario != null){
             return true;
+        }
+        return false;
+    }
+
+    public Boolean verificarExistenciaVice(Long id_sala){
+        List<SalaUsuario> salaUsuarios = salaUsuarioRepository.findBySala(id_sala);
+        for(SalaUsuario salaUsuario : salaUsuarios){
+            if(salaUsuario.getFuncaoUsuario() == Funcao.VICE_REPRESENTANTE){
+                return true;
+            }
         }
         return false;
     }
@@ -80,7 +97,10 @@ public class SalaUsuarioService {
     }
 
     public SalaUsuario addVice(Long id_sala, Long id_usuario){
-        if(verificarRepresentante(id_sala)){
+        if(verificarRepresentante(id_sala) &
+             !verificarExistenciaVice(id_sala) & 
+             !verificarRepresentante(id_sala, id_usuario))
+        {
             SalaUsuario salaUsuario = salaUsuarioRepository.findByUsuarioAndSala(id_usuario, id_sala);
             salaUsuario.setFuncaoUsuario(Funcao.VICE_REPRESENTANTE);
             salaUsuario.setIsAdmin(true);

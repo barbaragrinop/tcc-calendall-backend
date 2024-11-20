@@ -12,7 +12,9 @@ import com.calendall.tcc.model.Sala;
 
 public interface EventoSalaRepository extends JpaRepository<EventoSala, Long> {
     
+    @Query("SELECT e FROM EventoSala e WHERE e.sala = :sala ORDER BY e.dt_evento ASC")
     List<EventoSala> findBySala(Sala sala);
+
     @SuppressWarnings("null")
     Optional<EventoSala> findById(Long id);
 
