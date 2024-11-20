@@ -45,28 +45,18 @@ public class SalaService implements IService<Sala> {
         return sala;
     }
 
-    public EventoSala createEventoSala(Long id_sala, EventoSala eventoSala) {
-        Sala sala = salaRepository.findById(id_sala).orElse(null);
-        
-        if(salaUsuarioService.verificarRepresentante(id_sala) ){
-            if (sala != null){
-                eventoSala.setSala(sala);
-                eventoSalaRepository.save(eventoSala);
-                return eventoSala;
-            }
-        }        
-        return null;
-    }
-
     public SalaUsuario adicionaUsario(Long id_sala, Long id_usuario){
         Sala sala = salaRepository.findById(id_sala).orElse(null);
         Usuario usuarioToAdd = usuarioRepository.findById(id_usuario).orElse(null);
 
         if(sala != null & usuarioToAdd != null & 
-            !salaUsuarioService.verificarPresencaSala(id_sala, id_usuario) & salaUsuarioService.verificarRepresentante(id_sala))
+            !salaUsuarioService.verificarPresencaSala(id_sala, id_usuario) &
+             salaUsuarioService.verificarRepresentante(id_sala))
         {
             SalaUsuario salaUsuario = salaUsuarioService.atribuirFuncao(usuarioToAdd, sala, Funcao.ALUNO);
             salaUsuarioRepository.save(salaUsuario);
+            sala.setQt_membros(sala.getQt_membros() + 1);
+            salaRepository.save(sala);
             return salaUsuario;
         }
 

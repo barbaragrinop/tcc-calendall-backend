@@ -1,5 +1,7 @@
 package com.calendall.tcc.model.mapper;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,8 +10,10 @@ import org.springframework.stereotype.Component;
 
 import com.calendall.tcc.model.EventoSala;
 import com.calendall.tcc.model.Sala;
+import com.calendall.tcc.model.Usuario;
 import com.calendall.tcc.model.dto.EventoSalaDTO;
 import com.calendall.tcc.repository.SalaRepository;
+import com.calendall.tcc.service.SalaUsuarioService;
 
 import lombok.NoArgsConstructor;
 
@@ -19,6 +23,8 @@ public class EventoSalaMapper {
 
     @Autowired
     private SalaRepository salaRepository;
+    @Autowired
+    private SalaUsuarioService salaUsuarioService;
     
     public EventoSala toEntity(EventoSalaDTO dto, Long id_sala) {
         EventoSala eventoSala = new EventoSala();
@@ -28,10 +34,14 @@ public class EventoSalaMapper {
         Sala sala = salaRepository.findById(id_sala).orElse(null);
         eventoSala.setSala(sala);
 
+        Usuario usuario = salaUsuarioService.obterUsuarioLogado();
+
         eventoSala.setTitulo(dto.getTitulo());
         eventoSala.setDescricao(dto.getDescricao());
         eventoSala.setDt_evento(dto.getDt_evento());
         eventoSala.setIc_completa(false);
+        eventoSala.setDt_criacao(LocalDateTime.now(ZoneId.of("UTC-3")));
+        eventoSala.setUsuario_criador(usuario);
 
         return eventoSala;
     }
@@ -42,7 +52,6 @@ public class EventoSalaMapper {
         eventoSalaDTO.setTitulo(eventoSala.getTitulo());
         eventoSalaDTO.setDescricao(eventoSala.getDescricao());
         eventoSalaDTO.setDt_evento(eventoSala.getDt_evento());
-        //eventoSalaDTO.setId_sala(eventoSala.getSala().getId_sala());
 
         return eventoSalaDTO;
     }

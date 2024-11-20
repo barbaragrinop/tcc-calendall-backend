@@ -22,6 +22,8 @@ public class SalaMapper {
         sala.setNome(dto.getNome());
         sala.setDescricao(dto.getDescricao());
         sala.setDt_criacao(LocalDateTime.now(ZoneId.of("UTC-3")));
+        sala.setQt_eventos(0);
+        sala.setQt_membros(1);
 
         return sala;
     }

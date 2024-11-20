@@ -1,5 +1,8 @@
 package com.calendall.tcc.model;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,6 +23,13 @@ public class EventoSala extends Evento {
     @ManyToOne
     @JoinColumn(name = "id_sala", nullable = false)
     private Sala sala;
+
+    @Column(name="dt_criacao", nullable = false)
+    private LocalDateTime dt_criacao;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario_criador", nullable = false)
+    private Usuario usuario_criador;
 
 }
 

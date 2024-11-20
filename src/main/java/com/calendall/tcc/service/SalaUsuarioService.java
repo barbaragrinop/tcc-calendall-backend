@@ -52,6 +52,12 @@ public class SalaUsuarioService {
         salaUsuario.setUsuario(usuario);
         salaUsuario.setSala(sala);
         salaUsuario.setFuncaoUsuario(funcao);
+        if(funcao == Funcao.ALUNO){
+            salaUsuario.setIsAdmin(false);
+        }
+        else{
+            salaUsuario.setIsAdmin(true);
+        }
         salaUsuarioRepository.save(salaUsuario);
 
         return salaUsuario;
@@ -77,6 +83,7 @@ public class SalaUsuarioService {
         if(verificarRepresentante(id_sala)){
             SalaUsuario salaUsuario = salaUsuarioRepository.findByUsuarioAndSala(id_usuario, id_sala);
             salaUsuario.setFuncaoUsuario(Funcao.VICE_REPRESENTANTE);
+            salaUsuario.setIsAdmin(true);
             return salaUsuarioRepository.save(salaUsuario);
         }
         return null;

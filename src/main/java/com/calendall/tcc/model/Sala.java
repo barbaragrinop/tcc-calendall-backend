@@ -34,5 +34,11 @@ public class Sala implements Serializable {
     @CreationTimestamp
     private LocalDateTime dt_criacao;
 
+    @Column(name = "qt_eventos")
+    private Integer qt_eventos;
+
+    @Column(name = "qt_membros")
+    private Integer qt_membros;
+
     public Sala(){ }
 }

@@ -2,6 +2,7 @@ package com.calendall.tcc.controller;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ public class EventoSalaController {
     public ResponseEntity<EventoSala> postEventoSala(@PathVariable Long id_sala, @RequestBody @Valid EventoSalaDTO eventoSala) {
 
         if(
-            eventoSala.getDt_evento().isBefore(LocalDateTime.now()) ||
+            eventoSala.getDt_evento().isBefore(LocalDateTime.now(ZoneId.of("UTC-3"))) ||
             eventoSala.getTitulo() == null
             ){
             return ResponseEntity.badRequest().build(); //400
@@ -50,7 +51,7 @@ public class EventoSalaController {
 
         EventoSala eventoSalaEntity = _EventoSalaMapper.toEntity(eventoSala, id_sala);
 
-        EventoSala newEventoSala = _salaService.createEventoSala(id_sala, eventoSalaEntity);
+        EventoSala newEventoSala = _eventoSalaService.createEventoSala(id_sala, eventoSalaEntity);
 
         if(newEventoSala == null){
             return ResponseEntity.notFound().build(); //404
