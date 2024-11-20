@@ -24,7 +24,7 @@ public class EventoSala extends Evento {
     @JoinColumn(name = "id_sala", nullable = false)
     private Sala sala;
 
-    @Column
+    @Column(name="dt_criacao", nullable = false)
     private LocalDateTime dt_criacao;
 
     @ManyToOne

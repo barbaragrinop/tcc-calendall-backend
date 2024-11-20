@@ -55,6 +55,7 @@ public class SalaUsuarioController {
     }
 
     @PatchMapping("/{id_sala}/adicionarVice/{id_usuario}")
+    @Operation(summary = "Adicionar vice representante", description = "Adiciona vice representante em uma sala com id informado")
     public ResponseEntity<SalaUsuario> addVice (@PathVariable Long id_sala, @PathVariable Long id_usuario) {
         SalaUsuario vice = _salaUsuarioService.addVice(id_sala, id_usuario);
         if (vice != null){

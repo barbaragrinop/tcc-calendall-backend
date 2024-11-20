@@ -35,5 +35,9 @@ public class SalaUsuario {
 
     @Column(name = "nm_funcao_usuario", nullable = false)
     private Funcao funcaoUsuario;
+
+    @Column(name = "ic_admin", nullable = false)
+    private Boolean isAdmin;
+
 }
 
