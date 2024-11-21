@@ -63,13 +63,13 @@ public class AutenticacaoController {
         }
     }
 
-    @PatchMapping("/redefinicaoSenha/{usuarioId}")
+    @PatchMapping("/redefinicaoSenha/{id_usuario}")
     @Operation(summary = "Redefine a senha do usuário", description = "Redefine a senha do usuário no sistema")
-    public ResponseEntity<?> redefinirSenhaComValidacao(@PathVariable Long usuarioId,
+    public ResponseEntity<?> redefinirSenhaComValidacao(@PathVariable Long id_usuario,
             @RequestBody @Valid RedefinicaoSenhaDTO redefinicaoSenhaDto) {
 
         try {
-            _usuarioService.RedefinirSenha(usuarioId, redefinicaoSenhaDto);
+            _usuarioService.RedefinirSenha(id_usuario, redefinicaoSenhaDto);
 
             return ResponseEntity.ok("Senha redefinida com sucesso!");
         } catch (Exception ex) {

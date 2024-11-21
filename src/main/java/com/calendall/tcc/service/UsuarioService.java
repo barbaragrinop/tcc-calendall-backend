@@ -58,8 +58,8 @@ public class UsuarioService {
         return _usuarioRepository.findAll();
     }
 
-    public void RedefinirSenha(Long usuarioId, RedefinicaoSenhaDTO redefinicaoSenhaDto) throws Exception {
-        Usuario usuario = _usuarioRepository.findById(usuarioId)
+    public void RedefinirSenha(Long id_usuario, RedefinicaoSenhaDTO redefinicaoSenhaDto) throws Exception {
+        Usuario usuario = _usuarioRepository.findById(id_usuario)
                 .orElseThrow(() -> new Exception("Usuário não encontrado."));
     
         if (!_passwordEncoder.matches(redefinicaoSenhaDto.getSenhaAtual(), usuario.getSenha())) {
