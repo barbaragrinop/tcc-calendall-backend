@@ -1,6 +1,7 @@
 package com.calendall.tcc.model;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -29,6 +30,9 @@ public class Evento {
     @Column(name = "dt_evento", nullable = false)
     @NotNull(message = "Data do evento é obrigatória")
     private LocalDateTime dt_evento;
+
+    @Column(name="dt_criacao", nullable = false)
+    private LocalDateTime dt_criacao = LocalDateTime.now(ZoneId.of("UTC-3"));
 
     @Column(name = "ic_completa", nullable = false)
     @NotNull(message = "Indicador de evento completo é obrigatório")

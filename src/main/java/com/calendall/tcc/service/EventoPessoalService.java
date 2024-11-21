@@ -95,7 +95,7 @@ public class EventoPessoalService {
         return eventoPessoalRepository.save(novoEventoPessoal);
     }
 
-    public List<EventoPessoal> BuscarEventosPessoaisPorUsuario(Optional<Usuario> usuario) {
+    public List<EventoPessoal> BuscarEventosPessoaisPorUsuario(Usuario usuario) {
         return eventoPessoalRepository.findByUsuario(usuario);
     }
 

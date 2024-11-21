@@ -83,8 +83,9 @@ public class EventoPessoalController {
                 throw new Exception("Usuário não encontrado");
             }
 
+            Usuario usuario = usuarioProcurado.orElse(null);
             List<EventoPessoal> eventosPessoais = eventoPessoalService
-                    .BuscarEventosPessoaisPorUsuario(usuarioProcurado);
+                    .BuscarEventosPessoaisPorUsuario(usuario);
             return ResponseEntity.ok(eventosPessoais);
 
         } catch (Exception ex) {
