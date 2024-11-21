@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.calendall.tcc.model.Evento;
 import com.calendall.tcc.model.EventoPessoal;
+import com.calendall.tcc.model.EventoSala;
 import com.calendall.tcc.model.Usuario;
 import com.calendall.tcc.model.dto.EventoPessoalDTO;
 import com.calendall.tcc.model.dto.EventoPessoalEdicaoDTO;
 import com.calendall.tcc.model.dto.EventoPessoalNovoDTO;
 import com.calendall.tcc.repository.EventoPessoalRepository;
 import com.calendall.tcc.repository.EventoRepository;
+import com.calendall.tcc.repository.EventoSalaRepository;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
@@ -23,6 +25,9 @@ public class EventoPessoalService {
 
     @Autowired
     private EventoRepository eventoRepository;
+
+    @Autowired
+    private EventoSalaRepository eventoSalaRepository;
 
     @Autowired
     private EventoPessoalRepository eventoPessoalRepository;
@@ -54,6 +59,11 @@ public class EventoPessoalService {
         eventoPessoal.setTipoPrioridade(eventoPessoalDTO.getTipoPrioridade());
         eventoPessoal.setTipoNotificacao(eventoPessoalDTO.getTipoNotificacao());
 
+        Optional<EventoSala> eventoSalaExistenteById = eventoSalaRepository.findById(id_evento);
+        EventoSala eventoSalaExistente = eventoSalaExistenteById.get();
+        String nomeSalaOrigem = eventoSalaExistente.getSala().getNome();
+        eventoPessoal.setNm_origem(nomeSalaOrigem);
+
         return eventoPessoalRepository.save(eventoPessoal);
     }
 
@@ -70,6 +80,7 @@ public class EventoPessoalService {
         novoEventoPessoal.setTipoPrioridade(eventoPessoalNovoDTO.getTipoPrioridade());
         novoEventoPessoal.setTipoNotificacao(eventoPessoalNovoDTO.getTipoNotificacao());
         novoEventoPessoal.setUsuario(usuarioLogado);
+        novoEventoPessoal.setNm_origem("Calendário Pessoal");
 
         Evento novoEvento = new Evento();
 

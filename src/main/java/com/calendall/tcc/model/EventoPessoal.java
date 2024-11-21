@@ -40,6 +40,10 @@ public class EventoPessoal implements Serializable {
     @Column(name = "nm_notificacao")
     private String tipoNotificacao;
 
+    @Column(name = "nm_origem", nullable = false)
+    @NotNull(message = "Nome de origem é obrigatória.")
+    private String nm_origem;
+
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     @NotNull(message = "Usuário responsável pelo evento é obrigatório.")
