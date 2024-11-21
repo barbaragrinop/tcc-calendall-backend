@@ -1,6 +1,8 @@
 package com.calendall.tcc.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,10 +13,12 @@ import com.calendall.tcc.model.Usuario;
 import com.calendall.tcc.model.dto.TokenJwtDto;
 import com.calendall.tcc.model.dto.CadastroDto;
 import com.calendall.tcc.model.dto.LoginDto;
+import com.calendall.tcc.model.dto.RedefinicaoSenhaDTO;
 import com.calendall.tcc.service.UsuarioService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/autenticacao")
@@ -54,7 +58,21 @@ public class AutenticacaoController {
             return ResponseEntity.ok(new TokenJwtDto(token));
 
         } catch (Exception ex) {
-            
+
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PatchMapping("/redefinicaoSenha/{id_usuario}")
+    @Operation(summary = "Redefine a senha do usuário", description = "Redefine a senha do usuário no sistema")
+    public ResponseEntity<?> redefinirSenhaComValidacao(@PathVariable Long id_usuario,
+            @RequestBody @Valid RedefinicaoSenhaDTO redefinicaoSenhaDto) {
+
+        try {
+            _usuarioService.RedefinirSenha(id_usuario, redefinicaoSenhaDto);
+
+            return ResponseEntity.ok("Senha redefinida com sucesso!");
+        } catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }

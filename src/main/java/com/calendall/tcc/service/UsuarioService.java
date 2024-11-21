@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.calendall.tcc.model.Usuario;
 import com.calendall.tcc.model.dto.CadastroDto;
 import com.calendall.tcc.model.dto.LoginDto;
+import com.calendall.tcc.model.dto.RedefinicaoSenhaDTO;
 import com.calendall.tcc.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 
@@ -55,5 +56,21 @@ public class UsuarioService {
 
     public List<Usuario> obterTodosUsuarios() {
         return _usuarioRepository.findAll();
+    }
+
+    public void RedefinirSenha(Long id_usuario, RedefinicaoSenhaDTO redefinicaoSenhaDto) throws Exception {
+        Usuario usuario = _usuarioRepository.findById(id_usuario)
+                .orElseThrow(() -> new Exception("Usuário não encontrado."));
+    
+        if (!_passwordEncoder.matches(redefinicaoSenhaDto.getSenhaAtual(), usuario.getSenha())) {
+            throw new Exception("A senha atual está incorreta!");
+        }
+    
+        if (!redefinicaoSenhaDto.getSenhaNova().equals(redefinicaoSenhaDto.getSenhaConfirmada())) {
+            throw new Exception("A senha nova e a confirmação da mesma devem ser iguais!");
+        }
+    
+        usuario.setSenha(_passwordEncoder.encode(redefinicaoSenhaDto.getSenhaNova()));
+        _usuarioRepository.save(usuario);
     }
 }
